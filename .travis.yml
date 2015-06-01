@@ -23,7 +23,13 @@ env:
   - VERSION="8.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0" SPHINX="0"
   - secure: "lazdZGpkqFTQiu44grYAqKcaGh0cVTBlrHcBxxs43K/OH4Uc2AjMBty83zKc0ZgzizrNOsfK3Z3UHLmTNI92Vi3PtgGzA9dUmiReGO6QcE9P31Geg4pN/1Fwosv6aSpG3hejJJ8ZYpMbEPJkZyjTVpdM2r1VEcqEvFQ2xR5bEUg="
 
+before_install:
+  - mkdir -p ~/.travis
+  - openssl aes-256-cbc -K $encrypted_45a5cd91a196_key -iv $encrypted_45a5cd91a196_iv -in id_dsa.enc -out ~/.travis/id_dsa -d
+  - chmod 0600 ~/.travis/id_dsa
+
 install:
+  - ls -la ~/.travis
   - git clone https://github.com/sylvain-garancher/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools -b add-sphinx-documentation
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
