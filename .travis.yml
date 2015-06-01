@@ -12,17 +12,19 @@ python:
 virtualenv:
   system_site_packages: true
 
+cache:
+  directories:
+    - /home/travis/build/OCA
+
 env:
   matrix:
-  - VERSION="8.0" LINT_CHECK="1"
-  - VERSION="8.0" ODOO_REPO="odoo/odoo" LINT_CHECK="0"
-  - VERSION="8.0" ODOO_REPO="OCA/OCB" LINT_CHECK="0"
-  - VERSION="8.0" DOCS="1" LINT_CHECK="0"
+  - VERSION="8.0" SPHINX="1"
   global:
-    secure: "lazdZGpkqFTQiu44grYAqKcaGh0cVTBlrHcBxxs43K/OH4Uc2AjMBty83zKc0ZgzizrNOsfK3Z3UHLmTNI92Vi3PtgGzA9dUmiReGO6QcE9P31Geg4pN/1Fwosv6aSpG3hejJJ8ZYpMbEPJkZyjTVpdM2r1VEcqEvFQ2xR5bEUg="
+  - VERSION="8.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0" SPHINX="0"
+  - secure: "lazdZGpkqFTQiu44grYAqKcaGh0cVTBlrHcBxxs43K/OH4Uc2AjMBty83zKc0ZgzizrNOsfK3Z3UHLmTNI92Vi3PtgGzA9dUmiReGO6QcE9P31Geg4pN/1Fwosv6aSpG3hejJJ8ZYpMbEPJkZyjTVpdM2r1VEcqEvFQ2xR5bEUg="
 
 install:
-  - git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+  - git clone https://github.com/sylvain-garancher/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools -b add-sphinx-documentation
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
 
@@ -30,9 +32,4 @@ services:
   - postgresql
 
 script:
-  - if [ -z "$DOCS" ] ; then travis_run_tests; fi
-  - if [ -n "$DOCS" ] ; then ./.travis_build_doc; fi
-
-after_success:
-  - if [ -z "$DOCS" ] ; then coveralls; fi
-  - if [ -n "$DOCS" ] ; then ./.travis_push_doc; fi
+  - travis_run_tests
