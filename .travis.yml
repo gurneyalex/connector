@@ -33,7 +33,9 @@ install:
   - git clone --depth=1 https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
-  - pip install sphinx sphinx_bootstrap_theme sphinx-intl odoo-sphinx-autodoc
+  - git clone --depth=1 -bfix-6_odoo10-compat  https://github.com/gurneyalex/odoo-sphinx-autodoc ${HOME}/odoo-sphinx-autodoc
+  - pip install sphinx sphinx_bootstrap_theme sphinx-intl
+  - pip install -e ${HOME}/odoo-sphinx-autodoc
 
 services:
   - postgresql
